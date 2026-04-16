@@ -34,11 +34,15 @@ jobs:
         shell: pwsh
         run: |
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          $vstest = & $vswhere -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -find **\vstest.console.exe
+          $vstestPaths = & $vswhere -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -find **\vstest.console.exe
 
-          if (-not $vstest) {
+          if (-not $vstestPaths) {
             Write-Error "vstest.console.exe not found"
             exit 1
           }
+
+          $vstest = $vstestPaths | Select-Object -First 1
+
+          Write-Host "Using vstest at: $vstest"
 
           & $vstest "The-Foody-System\bin\Release\The-Foody-System.dll" /logger:console
