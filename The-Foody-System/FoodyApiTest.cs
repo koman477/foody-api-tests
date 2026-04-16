@@ -192,7 +192,7 @@ namespace FoodyExam
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                Assert.That(response.Data.Msg, Is.EqualTo("No food revues..."));
+                Assert.That(response.Data.Msg, Is.EqualTo("No food revues.."));
             }
         }
     }
