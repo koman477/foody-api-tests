@@ -1,0 +1,6 @@
+@Exam_Prep_BackEnd_QA_HostAddress = http://localhost:5118
+
+GET {{Exam_Prep_BackEnd_QA_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
