@@ -6,28 +6,29 @@ on:
       - main
 
 env:
-  DOTNET_VERSION: '8.0.x'
   FOODY_USER: ${{ secrets.FOODY_USER }}
   FOODY_PASS: ${{ secrets.FOODY_PASS }}
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore packages
+        run: nuget restore Exam-Prep-BackEnd-QA.sln
 
       - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+        run: msbuild Exam-Prep-BackEnd-QA.sln /p:Configuration=Release
 
       - name: Run tests
-        run: dotnet test --no-build --configuration Release
+        run: |
+          vstest.console.exe The-Foody-System\bin\Release\The-Foody-System.dll
