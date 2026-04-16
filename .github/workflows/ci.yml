@@ -30,5 +30,4 @@ jobs:
         run: msbuild Exam-Prep-BackEnd-QA.sln /p:Configuration=Release
 
       - name: Run tests
-        run: |
-          vstest.console.exe The-Foody-System\bin\Release\The-Foody-System.dll
+        run: dotnet test Exam-Prep-BackEnd-QA.sln --configuration Release --no-build
