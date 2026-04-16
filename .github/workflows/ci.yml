@@ -31,4 +31,14 @@ jobs:
         run: msbuild Exam-Prep-BackEnd-QA.sln /p:Configuration=Release
 
       - name: Run tests
-        run: dotnet test Exam-Prep-BackEnd-QA.sln --configuration Release --no-build
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vstest = & $vswhere -latest -products * -requires Microsoft.VisualStudio.PackageGroup.TestTools.Core -find **\vstest.console.exe
+
+          if (-not $vstest) {
+            Write-Error "vstest.console.exe not found"
+            exit 1
+          }
+
+          & $vstest "The-Foody-System\bin\Release\The-Foody-System.dll" /logger:console
